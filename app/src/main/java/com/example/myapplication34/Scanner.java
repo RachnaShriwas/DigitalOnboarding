@@ -1,5 +1,6 @@
 package com.example.myapplication34;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -62,7 +63,12 @@ public class Scanner extends AppCompatActivity {
                 mCameraView.stop();
                 runTextRecognition(bitmap);
                 Log.d("TAG", "*****in SCANNER bitmap object: " + bitmap.getHeight() + bitmap.getWidth());
-                ModelDocumentSelector.getDocumentType(bitmap);
+               // ModelDocumentSelector.getDocumentType(bitmap);
+                Volley_Call volley_call = new Volley_Call();
+                volley_call.requestAndGetResponse(bitmap);
+
+                Intent successPage = new Intent(getApplicationContext(), SuccessPage.class);
+                startActivity(successPage);
             }
 
             @Override

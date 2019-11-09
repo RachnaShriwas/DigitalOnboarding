@@ -1,7 +1,6 @@
 package com.example.myapplication34;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
 
@@ -48,9 +47,9 @@ public class ModelDocumentSelector {
     }
 
     public static void getDocumentType(Bitmap bitmap) {
-        bitmap = BitmapFactory.decodeFile("/Users/rachna/Desktop/SheHack/aadhaar_images/maxresdefault.jpg");
         bitmap = Bitmap.createScaledBitmap(bitmap, 224, 224, true);
-
+       // bitmap=Bitmap.createBitmap(1980, 1000, Bitmap.Config.ALPHA_8);
+        int batchNum = 0;
         float[][][][] input = new float[1][224][224][3];
         for (int x = 0; x < 224; x++) {
             for (int y = 0; y < 224; y++) {
@@ -58,26 +57,27 @@ public class ModelDocumentSelector {
                 // Normalize channel values to [-1.0, 1.0]. This requirement varies by
                 // model. For example, some models might require values to be normalized
                 // to the range [0.0, 1.0] instead.
-                input[0][x][y][0] = (Color.red(pixel) - 127) / 128.0f;
-                input[0][x][y][1] = (Color.green(pixel) - 127) / 128.0f;
-                input[0][x][y][2] = (Color.blue(pixel) - 127) / 128.0f;
+                input[batchNum][x][y][0] = (Color.red(pixel) - 127) / 128.0f;
+                input[batchNum][x][y][1] = (Color.green(pixel) - 127) / 128.0f;
+                input[batchNum][x][y][2] = (Color.blue(pixel) - 127) / 128.0f;
             }
         }
-        Log.d("TAG", "*****input: " + (input == null));
+
+        Log.d("TAG", "*****input: " + input[0][0].length + " " + input[0][0][0].length);
 
         try {
             FirebaseModelInputs inputs = new FirebaseModelInputs.Builder()
                     .add(input)  // add() as many input arrays as your model requires
                     .build();
-            Log.d("TAG", "*****inputs : " + inputs);
-            Log.d("TAG", "********inputoutput " + inputOutputOptions);
+            Log.d("TAG", "*****inputs : " + inputs.zzff().length);
+            Log.d("TAG", "********inputoutput " + inputOutputOptions.zzfe().entrySet().iterator().next().getValue());
             interpreter.run(inputs, inputOutputOptions)
                     .addOnSuccessListener(
                             new OnSuccessListener<FirebaseModelOutputs>() {
                                 @Override
                                 public void onSuccess(FirebaseModelOutputs result) {
                                     float[][] output = result.getOutput(0);
-                                    Log.d("TAG", "!!!!!!!!!!!!!! output: " + output[0]);
+                                    Log.d("TAG", "!!!!!!!!!!!!!! output: " + output[0][0]);
                                 }
                             })
                     .addOnFailureListener(
@@ -87,6 +87,7 @@ public class ModelDocumentSelector {
                                     // Task failed with an exception
                                     // ...
                                     Log.d("TAG", "!!!!!!!!in FAilure");
+                                    e.printStackTrace();
                                 }
                             });
         } catch (FirebaseMLException e) {
