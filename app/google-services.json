@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "786053548001",
+    "firebase_url": "https://firetut1-effdb.firebaseio.com",
+    "project_id": "firetut1-effdb",
+    "storage_bucket": "firetut1-effdb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786053548001:android:0b7d4399513635d855b4a0",
+        "android_client_info": {
+          "package_name": "com.example.firestore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "786053548001-jivobhusmn92ovipssqe97ksfoe1ldbn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm_l8iNBLJJgm_Skhs7TCLzrNXF1rOzK4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "786053548001-jivobhusmn92ovipssqe97ksfoe1ldbn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786053548001:android:970f52210d763fb055b4a0",
+        "android_client_info": {
+          "package_name": "com.example.myapplication34"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "786053548001-q3trj9jskf01utr32pinne20vuaalp4n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myapplication34",
+            "certificate_hash": "0c100a962386f6f5e99ad8186b208a0db6bb17cf"
+          }
+        },
+        {
+          "client_id": "786053548001-jivobhusmn92ovipssqe97ksfoe1ldbn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm_l8iNBLJJgm_Skhs7TCLzrNXF1rOzK4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "786053548001-jivobhusmn92ovipssqe97ksfoe1ldbn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
