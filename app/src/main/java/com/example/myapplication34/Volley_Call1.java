@@ -1,9 +1,10 @@
 package com.example.myapplication34;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.util.JsonReader;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,26 +22,29 @@ import java.nio.ByteBuffer;
 import javax.net.ssl.HttpsURLConnection;
 
 
-public class Volley_Call extends AppCompatActivity {
+public class Volley_Call1 extends AppCompatActivity {
     static boolean flag = false;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    protected void httpPost(Bitmap bitmap) {
-        Toast toast = Toast.makeText(getApplicationContext(),
-                "Image scanned",
-                Toast.LENGTH_SHORT);
-
-        toast.show();
+        Intent iin= getIntent();
+        Bundle b = iin.getExtras();
+        String bitmap = "";
+        if(b!=null)
+        {
+            bitmap =(String) b.get("bitMap");
+            Log.d("TAG", "@@@@@@@@@@@@@@@@@@@@@@ BItMap: " + bitmap);
+        }
         BufferedReader reader = null;
         try {
-            URL url = new URL("https://localhost:5000/img");
+            URL url = new URL("https://digon-api.herokuapp.com/img");
             URLConnection conn = url.openConnection();
             conn.setDoOutput(true);
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
             String data = "image="+bitmap;
             wr.write(data);
             wr.flush();
-
-            Log.d("TAG", "%%%%%%%%%%%%%%%% image written");
 
             // Get the server response
 
@@ -61,9 +65,8 @@ public class Volley_Call extends AppCompatActivity {
         }
         Log.d("TAG", "&&&&&&&&&&&flag = " + flag);
 
-//        Intent secondScan = new Intent(getApplicationContext(), SecondScan.class);
-//        startActivity(secondScan);
-
+        Intent secondScan = new Intent(getApplicationContext(), SuccessPage.class);
+        startActivity(secondScan);
     }
 
 

@@ -25,34 +25,25 @@ import com.wonderkiln.camerakit.CameraKitImage;
 import com.wonderkiln.camerakit.CameraKitVideo;
 import com.wonderkiln.camerakit.CameraView;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class Scanner extends AppCompatActivity {
+public class Scanner1 extends AppCompatActivity {
     @BindView(R.id.camView)
     CameraView mCameraView;
     @BindView(R.id.cameraBtn)
     Button mCameraButton;
     @BindView(R.id.graphic_overlay)
     GraphicOverlay mGraphicOverlay;
-
-    static int count = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scan);
         ButterKnife.bind(this);
-        Intent iin= getIntent();
-        Bundle b = iin.getExtras();
-
-        if(b!=null)
-        {
-            String j =(String) b.get("name");
-            Log.d("TAG", "@@@@@@@@@@@@@@@@@@@@@@ NAME: " + j);
-        }
 
         mCameraView.addCameraKitListener(new CameraKitEventListener() {
             @Override
@@ -67,19 +58,19 @@ public class Scanner extends AppCompatActivity {
 
             @Override
             public void onImage(CameraKitImage cameraKitImage) {
-                count++;
+
                 Bitmap bitmap = cameraKitImage.getBitmap();
                 bitmap = Bitmap.createScaledBitmap(bitmap, mCameraView.getWidth(), mCameraView.getHeight(), false);
                 mCameraView.stop();
                 runTextRecognition(bitmap);
                 Log.d("TAG", "*****in SCANNER bitmap object: " + bitmap.getHeight() + bitmap.getWidth());
                // ModelDocumentSelector.getDocumentType(bitmap);
-                if(count == 2) {
-                    Intent i = new Intent(getApplicationContext(), SuccessPage.class);
-                    startActivity(i);
-                }
-                Volley_Call volley_call = new Volley_Call();
-                volley_call.httpPost(bitmap);
+                Intent i = new Intent(getApplicationContext(), Volley_Call1.class);
+                int size = bitmap.getRowBytes() * bitmap.getHeight();
+                ByteBuffer b = ByteBuffer.allocate(size);
+                bitmap.copyPixelsToBuffer(b);
+                i.putExtra("bitMap", b.toString());
+                startActivity(i);
             }
 
             @Override
@@ -98,16 +89,16 @@ public class Scanner extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mCameraView.start();
-    }
-    @Override
-    public void onPause() {
-        mCameraView.stop();
-        super.onPause();
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        mCameraView.start();
+//    }
+//    @Override
+//    public void onPause() {
+//        mCameraView.stop();
+//        super.onPause();
+//    }
 
     private void runTextRecognition(Bitmap bitmap) {
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
