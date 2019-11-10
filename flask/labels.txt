@@ -1,0 +1,14 @@
+<<<<<<< HEAD
+Adhaar Card
+Bank Proof
+Driving License
+Pan Card
+Voter Card
+=======
+Adhaar Card
+Bank Proof
+Driving License
+Pan Card
+Voter Crad
+>>>>>>> 8014e6d88730d5db3ce95b7f22717e882f33ef2d
+Other
