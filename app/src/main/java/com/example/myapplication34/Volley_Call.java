@@ -1,85 +1,101 @@
 package com.example.myapplication34;
 
 import android.graphics.Bitmap;
-import android.util.JsonReader;
+import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
 
-import androidx.appcompat.app.AppCompatActivity;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.ByteBuffer;
-
-import javax.net.ssl.HttpsURLConnection;
 
 
-public class Volley_Call extends AppCompatActivity {
+public class Volley_Call extends AsyncTask<String,String,String> {
+    Bitmap bitmap = null;
+
+    @Override
+    protected String doInBackground(String... params) {
+        String JsonResponse = null;
+
+        ByteArrayOutputStream baos =new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte [] b=baos.toByteArray();
+        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+        HttpURLConnection urlConnection = null;
+        BufferedReader reader = null;
+
+        try {
+            JSONObject json = new JSONObject();
+            json.put("image", temp);
+
+            URL url = new URL("http://localhost:5000/img/");
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setDoOutput(true);
+            // is output buffer writter
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.setRequestProperty("Accept", "application/json");
+//set headers and method
+            Writer writer = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8"));
+            String json_string = json.toString();
+            writer.write(json_string);
+// json data
+            writer.close();
+            InputStream inputStream = urlConnection.getInputStream();
+//input stream
+            StringBuffer buffer = new StringBuffer();
+            if (inputStream == null) {
+                // Nothing to do.
+                return null;
+            }
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String inputLine;
+            while ((inputLine = reader.readLine()) != null)
+                buffer.append(inputLine + "\n");
+            if (buffer.length() == 0) {
+                // Stream was empty. No point in parsing.
+                return null;
+            }
+            JsonResponse = buffer.toString();
+//response data
+            Log.i("TAG",JsonResponse);
 
 
-    public void requestAndGetResponse(Bitmap bitmap) {
-        new Thread(new Runnable(){
-            @Override
-            public void run() {
-                // Do network action in this function
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+            if (reader != null) {
                 try {
-                    URL url = new URL("https://digon-api.herokuapp.com/img");
-                    HttpsURLConnection myConnection = (HttpsURLConnection) url.openConnection();
-                    myConnection.setRequestMethod("POST");
-                    int size = bitmap.getRowBytes() * bitmap.getHeight();
-                    ByteBuffer b = ByteBuffer.allocate(size);
-                    bitmap.copyPixelsToBuffer(b);
-                    myConnection.setRequestProperty("image", b.toString());
-
-                    if (myConnection.getResponseCode() == 200) {
-                        // Success
-                        // Further processing here
-                        InputStream responseBody = myConnection.getInputStream();
-                        InputStreamReader responseBodyReader = new InputStreamReader(responseBody, "UTF-8");
-                        JsonReader jsonReader = new JsonReader(responseBodyReader);
-                        Log.d("TAG", responseBody.toString());
-                        jsonReader.beginObject(); // Start processing the JSON object
-                        while (jsonReader.hasNext()) { // Loop through all keys
-                            String key = jsonReader.nextName(); // Fetch the next key
-                            if (key.equals("name")) { // Check if desired key
-                                // Fetch the value as a String
-                                String value = jsonReader.nextString();
-
-                                // Do something with the value
-                                // ...
-                                Log.d("TAG", "******name" + value);
-
-                                break; // Break out of the loop
-                            } else {
-                                jsonReader.skipValue(); // Skip values of other keys
-                            }
-                        }
-                        jsonReader.close();
-                    } else {
-                        // Error handling code goes here
-                    }
-                    myConnection.disconnect();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    reader.close();
+                } catch (final IOException e) {
+                    Log.e("TAG", "Error closing stream", e);
                 }
             }
-        }).start();
-       // RequestQueue queue = Volley.newRequestQueue(this);
-
+        }
+        return null;
     }
-//        JsonObjectRequest request = JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                Toast.makeText(getApplicationContext(), "Response :" + response.toString(), Toast.LENGTH_LONG).show();//display the response on screen
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.i("TAG", "Error :" + error.toString());
-//            }
-//        });
-//    }
-//    RequestQueue queue = Volley.newRequestQueue(this);
+
+
+    public void doCall(Bitmap bitmap) {
+        this.bitmap = bitmap;
+        new Volley_Call().executeOnExecutor(null);
+    }
+
+
 
 }

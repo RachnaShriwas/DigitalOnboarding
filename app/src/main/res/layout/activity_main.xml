@@ -34,14 +34,24 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true" />
-
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="15dp" >
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Scan"
-            android:id="@+id/cameraBtn"
-            android:shadowColor="@color/colorPrimary"
-            android:layout_gravity="bottom"/>
+            android:id="@+id/cameraBtn" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Next"
+                android:id="@+id/next" />
+        </TableRow>
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

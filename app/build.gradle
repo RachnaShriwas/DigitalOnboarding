@@ -26,7 +26,10 @@ android {
     aaptOptions {
         noCompress "tflite"  // Your model's file extension: "tflite", "lite", etc.
     }
+
+    useLibrary 'org.apache.http.legacy'
 }
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
