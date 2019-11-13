@@ -8,12 +8,12 @@ from google.cloud.vision import types
 import os
 from heuristics import  *
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS']='api-test-5195f987539c.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS']='api-test.json'
 
 
 app = Flask(__name__)
 url="https://vision.googleapis.com/v1/images:annotate"
-api_key='AIzaSyA_1Oro_J8ndG62rzAZvhPQsmTuQWTrMXM'
+api_key=''
 
 
 class FeatureType(Enum):
