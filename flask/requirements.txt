@@ -4,7 +4,7 @@ cachetools==3.1.1
 certifi==2023.7.22
 chardet==3.0.4
 Click==7.0
-Django==3.2.24
+Django==3.2.25
 Flask==2.2.5
 gast==0.2.2
 google-api-core==1.14.3
